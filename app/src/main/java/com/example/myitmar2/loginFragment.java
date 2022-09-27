@@ -140,7 +140,7 @@ public class loginFragment extends Fragment {
             public void onClick(View view) {
                 // myEntrada.getText().toString();
 
-                myRef.setValue(binding.inputEntrada.getEditText().getText().toString());
+                myRef.setValue(binding.inputUsuario.getEditText().getText().toString());
                 Toast.makeText(getActivity(), "Button Clicked " , Toast.LENGTH_SHORT).show();
 
             }
