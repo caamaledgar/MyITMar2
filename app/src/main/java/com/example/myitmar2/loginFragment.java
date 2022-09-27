@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myitmar2.databinding.FragmentLoginBinding;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
  * create an instance of this fragment.
  */
 public class loginFragment extends Fragment {
+    // bindig
+    FragmentLoginBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,18 +77,35 @@ public class loginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // bindig
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        //binding.getName().setText(viewModel.getName());
+
+        View view = binding.getRoot();
+        return view;
+
+        /*
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
+         */
+    }
+
+    // bindig
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /*
         TextView mytext = (TextView) getView().findViewById(R.id.text_inicio);
         TextInputLayout myEntrada = (TextInputLayout) getView().findViewById(R.id.input_entrada);
         Button myButton = (Button) getView().findViewById(R.id.button);
-
+        */
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -102,7 +122,7 @@ public class loginFragment extends Fragment {
                 String value = dataSnapshot.getValue(String.class);
                 Log.d(TAG, "Value is: " + value);
                 Toast.makeText(getActivity(), "Value is ITChiná  : " + value, Toast.LENGTH_SHORT).show();
-                mytext.setText(value);
+                binding.textInicio.setText(value);
 
             }
 
@@ -115,12 +135,12 @@ public class loginFragment extends Fragment {
             }
         });
 
-        myButton.setOnClickListener(new View.OnClickListener() {
+        binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // myEntrada.getText().toString();
 
-                myRef.setValue(myEntrada.getEditText().getText().toString());
+                myRef.setValue(binding.inputEntrada.getEditText().getText().toString());
                 Toast.makeText(getActivity(), "Button Clicked " , Toast.LENGTH_SHORT).show();
 
             }
