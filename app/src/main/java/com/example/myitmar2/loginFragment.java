@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myitmar2.Model.Usuarios;
 import com.example.myitmar2.databinding.FragmentLoginBinding;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +36,12 @@ import com.google.firebase.database.ValueEventListener;
 public class loginFragment extends Fragment {
     // bindig
     FragmentLoginBinding binding;
+
+    // Write a message to the database
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    // Estructura de arbol para segmentar nuestra aplicacion
+    String DB_FB_NODE = "ItChina/AppMovil/Hidroponia";
+    DatabaseReference dbRef = database.getReference(DB_FB_NODE);
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -100,52 +109,29 @@ public class loginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        /*
-        TextView mytext = (TextView) getView().findViewById(R.id.text_inicio);
-        TextInputLayout myEntrada = (TextInputLayout) getView().findViewById(R.id.input_entrada);
-        Button myButton = (Button) getView().findViewById(R.id.button);
-        */
-
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message1");
-
-        myRef.setValue("Hello, World!");
-
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + value);
-                Toast.makeText(getActivity(), "Value is ITChiná  : " + value, Toast.LENGTH_SHORT).show();
-                binding.textInicio.setText(value);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-                //Toast.makeText(context, "Failed to read value."+ error.toException(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
+        // Create a Cloud Storage reference from the app
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // myEntrada.getText().toString();
-
-                myRef.setValue(binding.inputUsuario.getEditText().getText().toString());
-                Toast.makeText(getActivity(), "Button Clicked " , Toast.LENGTH_SHORT).show();
-
+                insertarUsuario(view);
             }
         });
-
-
     }
+
+    public void insertarUsuario(View view){
+        DatabaseReference userRef = dbRef.child("Usuarios");
+        String rowUsuarios = binding.inputUsuario.getEditText().getText().toString();
+        String rowPassword = binding.inputPassword.getEditText().getText().toString();
+        String rowNombre   = binding.inputNombre.getEditText().getText().toString();
+        String rowCorreo   = binding.inputCorreo.getEditText().getText().toString();
+        String rowTelefono = binding.inputCorreo.getEditText().getText().toString();
+        // Test
+        //userRef.push().setValue(rowUsuarios);
+        //userRef.push().setValue(rowPassword);
+        // Real Objeto
+        Usuarios usuarios = new Usuarios(dbRef.push().getKey(), rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
+        userRef.child(usuarios.getUid()).setValue(usuarios);
+    }
+
 }
