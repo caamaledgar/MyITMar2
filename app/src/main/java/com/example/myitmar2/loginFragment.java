@@ -132,11 +132,9 @@ public class loginFragment extends Fragment {
         //userRef.push().setValue(rowUsuarios);
         //userRef.push().setValue(rowPassword);
         // Real Objeto
-        Usuarios usuarios = new Usuarios(dbRef.push().getKey(), rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
-        checkUsuarioExiste(view, rowCorreo);
         Usuarios usuarios = new
                 Usuarios(dbRef.push().getKey(),
-                    rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
+                rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
         userRef.child(usuarios.getUid()).setValue(usuarios);
         Toast.makeText(view.getContext(),  "Registro de Usuario Exitoso", Toast.LENGTH_SHORT).show();
         binding.inputUsuario.getEditText().setText("");
