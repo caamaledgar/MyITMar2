@@ -16,7 +16,6 @@ public class Usuarios {
         this.email = email;
         this.passw = passw;
         this.nombre = nombre;
-        this.correo = correo;
         this.telefono = telefono;
     }
 
@@ -50,14 +49,6 @@ public class Usuarios {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public String getTelefono() {

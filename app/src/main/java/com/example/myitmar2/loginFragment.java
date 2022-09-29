@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -41,7 +42,8 @@ public class loginFragment extends Fragment {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     // Estructura de arbol para segmentar nuestra aplicacion
     final String DB_FB_NODE = "ItChina/AppMovil/Hidroponia";
-    DatabaseReference dbRef = database.getReference(DB_FB_NODE);
+    final DatabaseReference dbRef = database.getReference(DB_FB_NODE);
+    final DatabaseReference userRef = dbRef.child("Usuarios");
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -130,6 +132,8 @@ public class loginFragment extends Fragment {
         //userRef.push().setValue(rowUsuarios);
         //userRef.push().setValue(rowPassword);
         // Real Objeto
+        Usuarios usuarios = new Usuarios(dbRef.push().getKey(), rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
+        checkUsuarioExiste(view, rowCorreo);
         Usuarios usuarios = new
                 Usuarios(dbRef.push().getKey(),
                     rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
@@ -142,6 +146,22 @@ public class loginFragment extends Fragment {
         binding.inputTelefono.getEditText().setText("");
         binding.inputUsuario.requestFocus();
 
+    }
+
+    public void  checkUsuarioExiste(View view, String rowCorreo){
+        DatabaseReference userRef = dbRef.child("Usuarios");
+        Query userEmailQery = userRef.orderByChild("correo").equalTo(rowCorreo).limitToFirst(1);
+        userEmailQery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
