@@ -40,7 +40,7 @@ public class loginFragment extends Fragment {
     // Write a message to the database
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     // Estructura de arbol para segmentar nuestra aplicacion
-    String DB_FB_NODE = "ItChina/AppMovil/Hidroponia";
+    final String DB_FB_NODE = "ItChina/AppMovil/Hidroponia";
     DatabaseReference dbRef = database.getReference(DB_FB_NODE);
 
     // TODO: Rename parameter arguments, choose names that match
@@ -125,13 +125,23 @@ public class loginFragment extends Fragment {
         String rowPassword = binding.inputPassword.getEditText().getText().toString();
         String rowNombre   = binding.inputNombre.getEditText().getText().toString();
         String rowCorreo   = binding.inputCorreo.getEditText().getText().toString();
-        String rowTelefono = binding.inputCorreo.getEditText().getText().toString();
+        String rowTelefono = binding.inputTelefono.getEditText().getText().toString();
         // Test
         //userRef.push().setValue(rowUsuarios);
         //userRef.push().setValue(rowPassword);
         // Real Objeto
-        Usuarios usuarios = new Usuarios(dbRef.push().getKey(), rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
+        Usuarios usuarios = new
+                Usuarios(dbRef.push().getKey(),
+                    rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
         userRef.child(usuarios.getUid()).setValue(usuarios);
+        Toast.makeText(view.getContext(),  "Registro de Usuario Exitoso", Toast.LENGTH_SHORT).show();
+        binding.inputUsuario.getEditText().setText("");
+        binding.inputPassword.getEditText().setText("");
+        binding.inputNombre.getEditText().setText("");
+        binding.inputCorreo.getEditText().setText("");
+        binding.inputTelefono.getEditText().setText("");
+        binding.inputUsuario.requestFocus();
+
     }
 
 }
