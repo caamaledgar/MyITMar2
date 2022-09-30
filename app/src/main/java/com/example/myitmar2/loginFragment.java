@@ -134,24 +134,27 @@ public class loginFragment extends Fragment {
         // Real Objeto
         Usuarios usuarios = new
                 Usuarios(dbRef.push().getKey(),
-                rowUsuarios, rowPassword, rowNombre, rowCorreo, rowTelefono);
-        userRef.child(usuarios.getUid()).setValue(usuarios);
-        Toast.makeText(view.getContext(),  "Registro de Usuario Exitoso", Toast.LENGTH_SHORT).show();
-        binding.inputUsuario.getEditText().setText("");
-        binding.inputPassword.getEditText().setText("");
-        binding.inputNombre.getEditText().setText("");
-        binding.inputCorreo.getEditText().setText("");
-        binding.inputTelefono.getEditText().setText("");
-        binding.inputUsuario.requestFocus();
+                rowUsuarios, rowCorreo, rowPassword, rowNombre, rowTelefono);
 
-    }
 
-    public void  checkUsuarioExiste(View view, String rowCorreo){
-        DatabaseReference userRef = dbRef.child("Usuarios");
-        Query userEmailQery = userRef.orderByChild("correo").equalTo(rowCorreo).limitToFirst(1);
+
+        Query userEmailQery = userRef.orderByChild("email").equalTo(rowCorreo).limitToFirst(1);
         userEmailQery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Toast.makeText(view.getContext(),  "Registro de Correo Existente "+snapshot.toString(), Toast.LENGTH_SHORT).show();
+
+                }else{
+                    userRef.child(usuarios.getUid()).setValue(usuarios);
+                    Toast.makeText(view.getContext(),  "Registro de Usuario Exitoso", Toast.LENGTH_SHORT).show();
+                    binding.inputUsuario.getEditText().setText("");
+                    binding.inputPassword.getEditText().setText("");
+                    binding.inputNombre.getEditText().setText("");
+                    binding.inputCorreo.getEditText().setText("");
+                    binding.inputTelefono.getEditText().setText("");
+                    binding.inputUsuario.requestFocus();
+                }
 
             }
 
@@ -160,6 +163,11 @@ public class loginFragment extends Fragment {
 
             }
         });
+
+
+
     }
+
+
 
 }

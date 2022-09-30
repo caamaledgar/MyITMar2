@@ -2,17 +2,18 @@ package com.example.myitmar2.Model;
 
 public class Usuarios {
     String uid;
+    String usuario;
     String email;
     String passw;
     String nombre;
-    String correo;
     String telefono;
 
     public Usuarios() {
     }
 
-    public Usuarios(String uid, String email, String passw, String nombre, String correo, String telefono) {
+    public Usuarios(String uid, String usuario, String email, String passw, String nombre,String telefono) {
         this.uid = uid;
+        this.usuario = usuario;
         this.email = email;
         this.passw = passw;
         this.nombre = nombre;
@@ -29,6 +30,14 @@ public class Usuarios {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public void setEmail(String email) {
@@ -59,15 +68,5 @@ public class Usuarios {
         this.telefono = telefono;
     }
 
-    @Override
-    public String toString() {
-        return "Usuarios{" +
-                "uid='" + uid + '\'' +
-                ", email='" + email + '\'' +
-                ", passw='" + passw + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", correo='" + correo + '\'' +
-                ", telefono='" + telefono + '\'' +
-                '}';
-    }
+
 }
